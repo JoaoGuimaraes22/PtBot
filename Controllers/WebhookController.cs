@@ -154,28 +154,27 @@ namespace WebhookApi.Controllers
 				switch (intent)
 				{
 					case "objetivo":
-						//sb.Append("Neste momento foram realizadas 35 vendas correspondendo a 50% do objetivo mensal.\nA previsão aponta para a realização de 90% do objetivo.");
-						sb.Append("CA");
+						sb.Append("Neste momento foram realizadas 35 vendas correspondendo a 50% do objetivo mensal.\nA previsão aponta para a realização de 90% do objetivo.");
 						break;
 					case "objetivometas":
 						sb.Append("Com a atual taxa de concretização teremos de realizar cerca de 20 contactos comerciais por dia para atingir o objetivo mensal. Atualmente estamos a realizar cerca de 10 por dia");
 						break;
-					case "impacto":
+					case "objetivometas - impacto":
 						sb.Append("Para tal acontecer a ordem de trabalhos tem de ser alterada alocando 60% do trabalho a Vendas e 40% a Serviços. Deseja atualizar a ordem de trabalhos da equipa comercial?");
 						break;
-					case "impacto - yes":
+					case "objetivometas - impacto - yes":
 						sb.Append("Ok. A equipa será notificada das alterações​. Algo mais em que posso ajudar?");
 						break;
 					case "melhorcolaboradores":
 						sb.Append("A Ana e o Pedro foram os melhores colaboradores na última semana superando os seus objetivos em 15% e 10% respetivamente.");
 						break;
-					case "restantescolaboradores":
+					case "melhorcolaboradores - restantescolaboradores":
 						sb.Append("A Maria concretizou 70% do seu objetivo, o Manuel 85% e o Francisco 90%.\n ​O feedback da equipa comercial indica que a informação sobre o produto é pouco clara. Deseja reforçar a componente de formação sobre o produto para estes colaboradores?");
 						break;
-					case "restantescolaboradores - yes":
+					case "melhorcolaboradores - restantescolaboradores - yes":
 						sb.Append("Ok. A componente de formação para este produto vai ser reforçada para estes colaboradores.\nAlgo mais em que posso ajudar?");
 						break;
-					case "restantescolaboradores - yes - no":
+					case "melhorcolaboradores - restantescolaboradores - yes - no":
 						sb.Append("Ok. Obrigado.");
 						break;
 					case "agenda":
@@ -184,10 +183,10 @@ namespace WebhookApi.Controllers
 					case "agenda - yes":
 						sb.Append("Tem conhecimento da disponibilidade do cliente?​");
 						break;
-					case "possiveis":
+					case "agenda - yes - possiveis":
 						sb.Append($"Encontrei disponíveis os seguinte horários: {canDay1} às 15:00 ou na {canDay2} às 16:00. Qual dos horários deseja?");
 						break;
-					case "marcaçao":
+					case "agenda - yes - possiveis - marcaçao":
 						sb.Append($"Ok, cancelei a sua reunião de hoje às 15:30 com o cliente João Silva e marquei uma nova reunião para {updateAgenda()} às 15:00. Vou informar o cliente das alterações. Algo mais em que posso ajudar?​");
 						break;
 					case "horariohoje":
