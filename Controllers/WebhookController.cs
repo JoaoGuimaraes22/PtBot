@@ -31,9 +31,8 @@ namespace WebhookApi.Controllers
 			string wk = DateTime.Today.DayOfWeek.ToString();
 			string[] daysPossible()
 			{
-				string day1 = "";
-				string day2 = "";
-				
+				string day1;
+				string day2;
 				if (wk == "Saturday" || wk == "Sunday")
 				{
 					day1 = "segunda-feira";
@@ -41,7 +40,7 @@ namespace WebhookApi.Controllers
 					string[] possibleDays = { day1, day2 };
 					return possibleDays;
 				}
-				if(wk == "Monday")
+				if (wk == "Monday")
 				{
 					day1 = "terça-feira";
 					day2 = "quarta-feira";
@@ -83,11 +82,70 @@ namespace WebhookApi.Controllers
 			var canDay1 = daysPossible()[0];
 			var canDay2 = daysPossible()[1];
 
+			var pas = request.QueryResult.Parameters;
+			var containsDate = pas.Fields.ContainsKey("date") && pas.Fields["date"].ToString().Replace('\"', ' ').Trim().Length > 0;
 
+			string updateAgenda()
+			{
+				if (containsDate)
+				{
+					string userDate = pas.Fields["date"].ToString().Replace('\"', ' ').Trim();
+					string formatDate() 
+					{
+						string formatedDate = "";
+						for (int i = 0; i < 11; i++)
+						{
+							formatedDate += userDate[i];
+						}
+						Console.WriteLine(formatedDate);
+						return formatedDate.Replace("-", "").Trim();
+					}
+					string getYear()
+					{
+						string year = "";
+						for(int i = 0; i < 4; i++)
+						{
+							year += formatDate()[i];
+						}
+						Console.WriteLine(year);
+						return year;
+					}
 
-			//var pas = request.QueryResult.Parameters;
+					string getMonth()
+					{
+						string month = "";
+						for(int i = 4; i < 6; i++)
+						{
+							month += formatDate()[i];
+						}
+						Console.WriteLine(month);
+						return month;
+					}
+
+					string getDay()
+					{
+						string day = "";
+						for(int i = 6; i < 8; i++)
+						{
+							day += formatDate()[i];
+						}
+						Console.WriteLine(day);
+						return day;
+					}
+
+					int correctYear = Int32.Parse(getYear());
+					int correctMonth = Int32.Parse(getMonth());
+					int correctDay = Int32.Parse(getDay());
+
+					DateTime dateValue = new DateTime(correctYear, correctMonth, correctDay);
+					string correctDate = dateValue.ToString("dddd");
+					Console.WriteLine(correctDate);
+					return correctDate;
+				}
+				return "[user said an invalid date]";
+			}
+			string entityDate = pas.Fields["date"].ToString().Replace('\"', ' ').Trim();
 			var intent = request.QueryResult.Intent.DisplayName.ToString().ToLower();
-			//var askingName = pas.Fields.ContainsKey("name") && pas.Fields["name"].ToString().Replace('\"', ' ').Trim().Length > 0;
 			var response = new WebhookResponse();
 
 			StringBuilder sb = new StringBuilder();
@@ -129,8 +187,11 @@ namespace WebhookApi.Controllers
 					case "possiveis":
 						sb.Append($"Encontrei disponíveis os seguinte horários: {canDay1} às 15:00 ou na {canDay2} às 16:00. Qual dos horários deseja?");
 						break;
-					case "":
-						sb.Append("");
+					case "marcaçao":
+						sb.Append($"Ok, cancelei a sua reunião de hoje às 15:30 com o cliente João Silva e marquei uma nova reunião para {updateAgenda()} às 15:00. Vou informar o cliente das alterações. Algo mais em que posso ajudar?​");
+						break;
+					case "horariohoje":
+						sb.Append("Para hoje tem agendadas 2 atividades: Pedido de adesão ao CA Online às 14:15 e um contacto comercial  de promoção do Cartão CA Corporate Premium às 15:15 horas. Algo mais em que posso ajudar?");
 						break;
 					case "not available":
 						sb.Append("Desculpe, não percebi o que disse");
