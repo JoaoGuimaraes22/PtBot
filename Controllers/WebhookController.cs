@@ -27,6 +27,64 @@ namespace WebhookApi.Controllers
 				request = jsonParser.Parse<WebhookRequest>(reader);
 			}
 
+			//Get week day
+			string wk = DateTime.Today.DayOfWeek.ToString();
+			string[] daysPossible()
+			{
+				string day1 = "";
+				string day2 = "";
+				
+				if (wk == "Saturday" || wk == "Sunday")
+				{
+					day1 = "segunda-feira";
+					day2 = "terça-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				if(wk == "Monday")
+				{
+					day1 = "terça-feira";
+					day2 = "quarta-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				if (wk == "Tuesday")
+				{
+					day1 = "quarta-feira";
+					day2 = "quinta-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				if (wk == "Wednesday")
+				{
+					day1 = "quinta-feira";
+					day2 = "sexta-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				if (wk == "Thursday")
+				{
+					day1 = "sexta-feira";
+					day2 = "segunda-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				if (wk == "Friday")
+				{
+					day1 = "segunda-feira";
+					day2 = "terça-feira";
+					string[] possibleDays = { day1, day2 };
+					return possibleDays;
+				}
+				string[] wentWrong = { "error", "error2" };
+				return wentWrong;
+			}
+
+			var canDay1 = daysPossible()[0];
+			var canDay2 = daysPossible()[1];
+
+
+
 			//var pas = request.QueryResult.Parameters;
 			var intent = request.QueryResult.Intent.DisplayName.ToString().ToLower();
 			//var askingName = pas.Fields.ContainsKey("name") && pas.Fields["name"].ToString().Replace('\"', ' ').Trim().Length > 0;
@@ -64,6 +122,12 @@ namespace WebhookApi.Controllers
 						break;
 					case "agenda":
 						sb.Append("OK. Deseja agendar a reunião para outro dia?");
+						break;
+					case "agenda - yes":
+						sb.Append("Tem conhecimento da disponibilidade do cliente?​");
+						break;
+					case "possiveis":
+						sb.Append($"Encontrei disponíveis os seguinte horários: {canDay1} às 15:00 ou na {canDay2} às 16:00. Qual dos horários deseja?");
 						break;
 					case "":
 						sb.Append("");
